@@ -68,13 +68,13 @@ class Pollex_Calendar_Activator {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE $table_name (
-			id INT NOT NULL AUTO_INCREMENT,
-			serieId INT,
-			ownerId INT NOT NULL,
-			startDate DATETIME NOT NULL,
-			endDate DATETIME NOT NULL,
+			id int NOT NULL AUTO_INCREMENT,
+			serieId int,
+			ownerId int NOT NULL,
+			startDate datetime NOT NULL,
+			endDate datetime NOT NULL,
 			title varchar(255) NOT NULL,
-			description TEXT,
+			description text DEFAULT '' NOT NULL,
 			PRIMARY KEY (id)
 		) $charset_collate;";
 
@@ -95,9 +95,9 @@ class Pollex_Calendar_Activator {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE $table_name (
-			id INT NOT NULL AUTO_INCREMENT,
-			type INT NOT NULL,
-			ownerId INT NOT NULL,
+			id int NOT NULL AUTO_INCREMENT,
+			type int NOT NULL,
+			ownerId int NOT NULL,
 			PRIMARY KEY (id)
 		) $charset_collate;";
 
@@ -118,10 +118,10 @@ class Pollex_Calendar_Activator {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE $table_name (
-			id INT NOT NULL AUTO_INCREMENT,
-			eventId INT NOT NULL,
+			id int NOT NULL AUTO_INCREMENT,
+			eventId int NOT NULL,
 			attributeKey varchar(255) NOT NULL,
-			attributeValue TEXT NOT NULL,
+			attributeValue text NOT NULL,
 			PRIMARY KEY (id)
 		) $charset_collate;";
 
