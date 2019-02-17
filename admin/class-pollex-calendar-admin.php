@@ -62,7 +62,7 @@ class Pollex_Calendar_Admin {
 	 */
 	public function load_dependencies() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) / 'admin/class-pollex-calendar-settings.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-pollex-calendar-settings.php';
 		
 	}
 
