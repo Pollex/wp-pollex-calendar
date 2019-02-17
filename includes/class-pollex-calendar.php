@@ -67,8 +67,8 @@ class Pollex_Calendar {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'PLUGIN_NAME_VERSION' ) ) {
-			$this->version = PLUGIN_NAME_VERSION;
+		if ( defined( 'POLLEX_CALENDAR_VERSION' ) ) {
+			$this->version = POLLEX_CALENDAR_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
