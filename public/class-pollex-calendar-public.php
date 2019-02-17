@@ -18,7 +18,7 @@
  *
  * @package    Pollex_Calendar
  * @subpackage Pollex_Calendar/public
- * @author     Pollex' (Tim van Osch) <timvosch@pollex.nl>
+ * @author     Pollex' <timvosch@pollex.nl>
  */
 class Pollex_Calendar_Public {
 
