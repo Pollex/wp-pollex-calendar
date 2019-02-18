@@ -1,0 +1,22 @@
+{
+    "name": "pollex/pollex-calendar",
+    "type": "project",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Tim van Osch",
+            "email": "timvosch@pollex.nl"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "admin/",
+            "includes/",
+            "models/"
+        ]
+    },
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    }
+}
