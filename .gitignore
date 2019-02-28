@@ -40,3 +40,7 @@ intermediate
 cache
 
 /vendor/
+
+# tmp folder
+tmp/*
+!tmp/.gitkeep
