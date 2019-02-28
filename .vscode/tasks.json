@@ -6,7 +6,7 @@
         {
             "label": "Run Tests",
             "type": "shell",
-            "command": "./vendor/bin/phpunit --bootstrap ./vendor/autoload.php ${file}",
+            "command": "WP_TESTS_DIR=${workspaceFolder}/tmp/wordpress-tests-lib ${workspaceFolder}/vendor/bin/phpunit",
             "group": "test",
             "presentation": {
                 "reveal": "always",
