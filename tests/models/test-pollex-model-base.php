@@ -5,8 +5,6 @@
  * @package Pollex_Calendar
  */
 
-
-
 class Pollex_Model_Base_Constructor_Test extends WP_UnitTestCase {
 
 }
