@@ -19,7 +19,7 @@ class Pollex_Model_Event_Series_Test extends WP_UnitTestCase {
         $serie->save();
         // Retrieve by query
         global $wpdb;
-        $table_name = EventSeries::get_table_name();
+        $table_name = EventSeries::get_full_table_name();
         $query = $wpdb->prepare(
             "SELECT * FROM $table_name WHERE type=%d AND ownerId=%d",
             $serie->type,
@@ -36,14 +36,14 @@ class Pollex_Model_Event_Series_Test extends WP_UnitTestCase {
         $serie = new EventSeries();
         $serie->type = 5;
         $serie->owner_id = 3;
-        $this->assertEquals(-1, $serie->get_id(), 'ID Should be -1');
+        $this->assertEquals(null, $serie->get_id(), 'ID Should be Null');
         // Act
         $serie->save();
         // Assert ID has changed
         $this->assertTrue($serie->get_id() >= 0);
         // Retrieve instance based on Id
         global $wpdb;
-        $table_name = EventSeries::get_table_name();
+        $table_name = EventSeries::get_full_table_name();
         $query = $wpdb->prepare(
             "SELECT * FROM $table_name WHERE id=%d",
             $serie->get_id()
@@ -75,15 +75,15 @@ class Pollex_Model_Event_Series_Test extends WP_UnitTestCase {
 
     public function test_get_should_return_instance_with_same_id() {
         // Insert an instance
-        $_ = new EventSeries();
-        $_->type = 1;
-        $_->owner_id = 15;
-        $_->save();
-        $this->assertTrue($serie->get_id() >= 0);
+        $serie1 = new EventSeries();
+        $serie1->type = 1;
+        $serie1->owner_id = 15;
+        $serie1->save();
+        $this->assertTrue($serie1->get_id() >= 0);
         // Act
-        $serie = EventSeries::get($_->get_id());
+        $serie2 = EventSeries::get($serie1->get_id());
         // Assert
-        $this->assertEquals($_->get_id(), $serie->get_id());
+        $this->assertEquals($serie1->get_id(), $serie2->get_id());
         
     }
 }
