@@ -11,13 +11,9 @@
     "autoload": {
         "classmap": [
             "admin/",
-            "includes/"
-        ],
-        "psr-0": {
-            "Pollex\\Wordpress\\Models\\": "models/",
-            "Pollex\\Wordpress\\Exceptions\\": "exceptions/",
-            "Pollex\\Wordpress\\Tests\\": "test/"
-        }
+            "includes/",
+            "models/"
+        ]
     },
     "require": {},
     "require-dev": {
