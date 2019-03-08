@@ -87,4 +87,9 @@ abstract class BaseModel
      * Return an array with all properties with values mapped in an array
      */
     protected abstract function get_columns();
+
+    /**
+     * Return the table name without wpdb prefix
+     */
+    protected static abstract function get_table_name();
 }
