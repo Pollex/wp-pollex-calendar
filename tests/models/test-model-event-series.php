@@ -86,4 +86,17 @@ class Pollex_Model_Event_Series_Test extends WP_UnitTestCase {
         $this->assertEquals($serie1->get_id(), $serie2->get_id());
         
     }
+
+    public function test_unbind_should_set_id_to_null() {
+        // Arrange
+        $serie = new EventSeries();
+        $serie->type = 1;
+        $serie->owner_id = 5;
+        $serie->save();
+        $this->assertTrue($serie->get_id() >= 0, 'Model was not saved');
+        // Act
+        $serie->unbind();
+        // Assert
+        $this->assertEquals(null, $serie->get_id(), 'ID is not unset');
+    }
 }
