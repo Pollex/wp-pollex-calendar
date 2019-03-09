@@ -15,8 +15,8 @@ class EventAttribute extends BaseModel {
         $instance = new static();
         $instance->id = $row['id'];
         $instance->event_id = $row['event_id'];
-        $instance->key = $row['key'];
-        $instance->value = $row['value'];
+        $instance->key = $row['attributeKey'];
+        $instance->value = $row['attributeValue'];
         return $instance;
     }
 
@@ -26,8 +26,8 @@ class EventAttribute extends BaseModel {
     protected function get_columns() {
         return array(
             'eventId' => $this->event_id,
-            'key' => $this->key,
-            'value' => $this->value
+            'attributeKey' => $this->key,
+            'attributeValue' => $this->value
         );
     }
 
