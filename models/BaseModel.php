@@ -19,6 +19,18 @@ abstract class BaseModel
     }
 
     /**
+     * Unbind a model from the database.
+     * 
+     * Unbinding a model from a database means that there is no
+     * relation anymore to a database row. In simple words, the 
+     * model's id is no longer set and the instance will be 
+     * treated as if it is new.
+     */
+    public function unbind() {
+        $this->id = null;
+    }
+
+    /**
      * Update this instance based on id.
      */
     protected function update() {
