@@ -88,4 +88,43 @@ class EventFactoryTest extends \WP_UnitTestCase {
         $this->assertEquals($owner_id, $event->get_owner_id());
     }
 
+    public function test_creation_from_arrays() {
+        // Arrange
+        $array1 = array(
+            'id' => 1,
+            'title' => 'event1',
+            'description' => '',
+            'start' => '2019-03-01T12:00:00Z',
+            'end' => '2019-03-01T12:30:00Z',
+            'owner_id' => 0
+        );
+        $array2 = array(
+            'id' => 2,
+            'title' => 'event2',
+            'description' => '',
+            'start' => '2019-03-01T12:00:00Z',
+            'end' => '2019-03-01T12:30:00Z',
+            'owner_id' => 0
+        );
+        $array3 = array(
+            'id' => 3,
+            'title' => 'event3',
+            'description' => '',
+            'start' => '2019-03-01T12:00:00Z',
+            'end' => '2019-03-01T12:30:00Z',
+            'owner_id' => 0
+        );
+        $arrays = [$array1, $array2, $array3];
+        // Act
+        $events = EventFactory::create_multiple($arrays);
+        // Sort returned event titles
+        $event_titles = array_map(function($event) { return $event->get_title(); }, $events);
+        sort($event_titles);
+        // Sort expected titles
+        $expected_event_titles = array_map(function($array) { return $array['title']; }, $arrays);
+        sort($expected_event_titles);
+        // Assert
+        $this->assertEquals($expected_event_titles, $event_titles);
+    }
+
 }

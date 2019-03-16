@@ -138,4 +138,23 @@ class EventFactory {
         );
     }
 
+    /*
+        Static utilities
+    */
+
+    /**
+     * Create multiple Events from arrays
+     *
+     * @param array $array
+     * @return Event[*]
+     */
+    public static function create_multiple(array $array) {
+        $events = [];
+        foreach ($array as $_ => $mapping) {
+            $event = (new static())->from_array($mapping)->create();
+            $events[] = $event;
+        }
+        return $events;
+    }
+
 }
