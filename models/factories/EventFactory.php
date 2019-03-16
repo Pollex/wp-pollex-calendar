@@ -109,11 +109,11 @@ class EventFactory {
         if (array_key_exists('description', $array)) {
             $this->set_description($array['description']);
         }
-        if (array_key_exists('start', $array)) {
-            $this->set_start($array['start']);
+        if (array_key_exists('start_datetime', $array)) {
+            $this->set_start($array['start_datetime']);
         }
-        if (array_key_exists('end', $array)) {
-            $this->set_end($array['end']);
+        if (array_key_exists('end_datetime', $array)) {
+            $this->set_end($array['end_datetime']);
         }
         if (array_key_exists('owner_id', $array)) {
             $this->set_owner_id($array['owner_id']);
@@ -149,10 +149,11 @@ class EventFactory {
      * @return Event[*]
      */
     public static function create_multiple(array $array) {
+        // var_dump($array);
         $events = [];
         foreach ($array as $_ => $mapping) {
             $event = (new static())->from_array($mapping)->create();
-            $events[] = $event;
+            array_push($events, $event);
         }
         return $events;
     }

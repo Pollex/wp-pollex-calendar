@@ -69,10 +69,10 @@ class Pollex_Calendar_Activator {
 
 		$sql = "CREATE TABLE $table_name (
 			id int NOT NULL AUTO_INCREMENT,
-			serieId int,
-			ownerId int NOT NULL,
-			startDate datetime NOT NULL,
-			endDate datetime NOT NULL,
+			serie_id int,
+			owner_id int NOT NULL,
+			start_datetime datetime NOT NULL,
+			end_datetime datetime NOT NULL,
 			title varchar(255) NOT NULL,
 			description text DEFAULT '' NOT NULL,
 			PRIMARY KEY (id)
@@ -97,7 +97,6 @@ class Pollex_Calendar_Activator {
 		$sql = "CREATE TABLE $table_name (
 			id int NOT NULL AUTO_INCREMENT,
 			type int NOT NULL,
-			ownerId int NOT NULL,
 			PRIMARY KEY (id)
 		) $charset_collate;";
 
