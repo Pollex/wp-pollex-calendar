@@ -10,4 +10,8 @@ class Entity {
     public function get_id() {
         return $this->id;
     }
+
+    public static function get_properties() {
+        return [ 'id' ];
+    }
 }

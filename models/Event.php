@@ -39,4 +39,17 @@ class Event extends Entity{
         return $this->owner_id;
     }
 
+    public static function get_properties() {
+        return array_merge(
+            parent::get_properties(),
+            [
+                'title',
+                'description',
+                'start',
+                'end',
+                'owner_id'
+            ]
+        );
+    }
+
 }
