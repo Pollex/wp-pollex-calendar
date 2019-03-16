@@ -99,24 +99,19 @@ class EventFactory {
      * @param array $array
      * @return EventFactory
      */
-    public function from_array(array $array) {
-        if (array_key_exists('id', $array)) {
-            $this->set_id($array['id']);
-        }
-        if (array_key_exists('title', $array)) {
-            $this->set_title($array['title']);
-        }
-        if (array_key_exists('description', $array)) {
-            $this->set_description($array['description']);
-        }
-        if (array_key_exists('start_datetime', $array)) {
-            $this->set_start($array['start_datetime']);
-        }
-        if (array_key_exists('end_datetime', $array)) {
-            $this->set_end($array['end_datetime']);
-        }
-        if (array_key_exists('owner_id', $array)) {
-            $this->set_owner_id($array['owner_id']);
+    public function from_array(array $array, $property_mapping = null) {
+        foreach(Event::get_properties() as $property) {
+            // If the property is mapped, use that
+            $mapped_property = $property_mapping[$property] ?? $property;
+            // Check if the given array has this property from iteration
+            $array_has_key = array_key_exists($mapped_property, $array);
+            // Check if factory contains a setter method for this property
+            $setter_method = "set_$property";
+            $key_has_setter = in_array($setter_method, \get_class_methods(static::class));
+            // If array has key and factory has a setter for it, apply it
+            if ($array_has_key && $key_has_setter) {
+                $this->$setter_method($array[$mapped_property]);
+            }
         }
         // Allow chaining
         return $this;
@@ -148,11 +143,11 @@ class EventFactory {
      * @param array $array
      * @return Event[*]
      */
-    public static function create_multiple(array $array) {
+    public static function create_multiple(array $array, array $property_mapping = null) {
         // var_dump($array);
         $events = [];
         foreach ($array as $_ => $mapping) {
-            $event = (new static())->from_array($mapping)->create();
+            $event = (new static())->from_array($mapping, $property_mapping)->create();
             array_push($events, $event);
         }
         return $events;
