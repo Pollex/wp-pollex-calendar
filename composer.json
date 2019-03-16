@@ -13,7 +13,7 @@
             "admin/",
             "includes/"
         ],
-        "psr-0": {
+        "psr-4": {
             "Pollex\\Calendar\\Models\\": "./models"
         }
     },
