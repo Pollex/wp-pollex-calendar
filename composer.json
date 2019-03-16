@@ -14,7 +14,8 @@
             "includes/"
         ],
         "psr-4": {
-            "Pollex\\Calendar\\Models\\": "./models"
+            "Pollex\\Calendar\\Models\\": "./models",
+            "Pollex\\Calendar\\Repositories\\": "./repositories"
         }
     },
     "require": {},
