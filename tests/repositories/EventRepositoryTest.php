@@ -44,7 +44,7 @@ class EventRepositoryTest extends \WP_UnitTestCase {
     }
 
     /**
-     * @dataProvider test_find_all_in_period_provider
+     * @dataProvider find_all_in_period_provider
      */
     public function test_find_all_in_period($from, $to, $inclusive, $expected_titles) {
         // Arrange
@@ -61,7 +61,7 @@ class EventRepositoryTest extends \WP_UnitTestCase {
         $this->assertEquals($expected_titles, $titles);
     }
 
-    public function test_find_all_in_period_provider() {
+    public function find_all_in_period_provider() {
         return [
             [
                 '2019-03-01T00:00:00Z',
