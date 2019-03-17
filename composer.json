@@ -11,9 +11,12 @@
     "autoload": {
         "classmap": [
             "admin/",
-            "includes/",
-            "models/"
-        ]
+            "includes/"
+        ],
+        "psr-4": {
+            "Pollex\\Calendar\\Models\\": "./models",
+            "Pollex\\Calendar\\Repositories\\": "./repositories"
+        }
     },
     "require": {},
     "require-dev": {

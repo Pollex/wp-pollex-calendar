@@ -1,38 +1,55 @@
-<?php
+<?php namespace Pollex\Calendar\Models;
 
-class Event extends BaseModel
-{
-    public $serie_id;
-    public $owner_id;
-    public $start_date;
-    public $end_date;
-    public $title;
-    public $description;
+/**
+ * Undocumented class
+ */
+class Event extends Entity{
+    private $title;
+    private $description;
+    private $start;
+    private $end;
+    private $owner_id;
 
-    protected function get_table_name() {
-        return 'pollex_calendar_events';
+    public function __construct(int $id, string $title, string $description, \DateTime $start, \DateTime $end, int $owner_id) {
+        parent::__construct($id);
+        $this->title = $title;
+        $this->description = $description;
+        $this->start = $start;
+        $this->end = $end;
+        $this->owner_id = $owner_id;
     }
 
-    protected function get_columns() {
-        return array(
-            'serie_id' => $this->serie_id,
-            'owner_id' => $this->owner_id,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
-            'title' => $this->title,
-            'description' => $this->description
+    public function get_title(){
+        return $this->title;
+    }
+    
+    public function get_description(){
+        return $this->description;
+    }
+
+    public function get_start(){
+        return $this->start;
+    }
+
+    public function get_end(){
+        return $this->end;
+    }
+
+    public function get_owner_id(){
+        return $this->owner_id;
+    }
+
+    public static function get_properties() {
+        return array_merge(
+            parent::get_properties(),
+            [
+                'title',
+                'description',
+                'start',
+                'end',
+                'owner_id'
+            ]
         );
     }
 
-    protected static function create_from_row($row) {
-        $instance = new static();
-        $instance->id = $row['id'];
-        $instance->serie_id = $row['serie_id'];
-        $instance->owner_id = $row['owner_id'];
-        $instance->start_date = $row['start_date'];
-        $instance->end_date = $row['end_date'];
-        $instance->title = $row['title'];
-        $instance->description = $row['description'];
-        return $instance;
-    }
 }
