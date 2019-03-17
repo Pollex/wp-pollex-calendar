@@ -13,12 +13,12 @@ class EventSerieRepositoryTest extends \WP_UnitTestCase {
     public function setUp() {
         parent::setUp();
         $event_series_table_name = 'pollex_calendar_event_series';
-        $event_series_columns = ['id', 'type'];
-        $event_series_format = '%d, %d';
+        $event_series_columns = ['type'];
+        $event_series_format = '%d';
         $this->dummy_event_series = [
-            [0, 1],
-            [1, 2],
-            [2, 3],
+            [1],
+            [2],
+            [3],
         ];
         $this->insert_dummy_data($this->dummy_event_series, $event_series_columns, $event_series_format, $event_series_table_name);
     }
@@ -52,17 +52,19 @@ class EventSerieRepositoryTest extends \WP_UnitTestCase {
         $this->assertCount(count($this->dummy_event_series), $event_series);
     }
 
+    /**
+     * @dependsOn test_find_all
+     */
     public function test_find_by_id() {
         // Arrange
-        $id = 1;
-        $expected_type = 2;
         $repo = new EventSerieRepository();
+        $expected_serie = $repo->find_all()[0];
         // Act
-        $event_serie = $repo->find_by_id($id);
+        $event_serie = $repo->find_by_id($expected_serie->get_id());
         // Assert
         $this->assertInstanceOf(EventSerie::class, $event_serie);
-        $this->assertEquals($id, $event_serie->get_id());
-        $this->assertEquals($expected_type, $event_serie->get_type());
+        $this->assertEquals($expected_serie->get_id(), $event_serie->get_id());
+        $this->assertEquals($expected_serie->get_type(), $event_serie->get_type());
     }
 
     public function test_find_by_id_should_throw_for_not_existing() {
