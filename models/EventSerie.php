@@ -13,4 +13,13 @@ class EventSerie extends Entity {
         return $this->type;
     }
 
+    public static function get_properties(){
+        return array_merge(
+            parent::get_properties(),
+            [
+                'type'
+            ]
+        );
+    }
+
 }
