@@ -10,6 +10,7 @@ class EventsController extends Controller{
          * This looks something like:
          * /wp-json/pollex/calendar/v1/events
          */
+        // URL: /events
         register_rest_route($this->namespace, $this->base, array(
             array(
                 'methods' => \WP_REST_Server::READABLE,
@@ -27,6 +28,19 @@ class EventsController extends Controller{
                 )
             )
         ));
+        // URL: /events/{id}
+        register_rest_route($this->namespace, $this->base . '/(?P<id>\d+)', array(
+            array (
+                'methods' => \WP_REST_Server::READABLE,
+                'callback' => array( $this, 'get_event' ),
+                'permission_callback' => array( $this, 'get_event_permission_check' ),
+                'args' => array(
+                    'id' => array(
+                        'validate_callback' => 'is_numeric'
+                    )
+                )
+            ),
+        ));
     }
 
     public function get_events( $request ) {
@@ -40,7 +54,22 @@ class EventsController extends Controller{
         return new \WP_Rest_Response( $data, 200 );
     }
 
+    public function get_event( $request ) {
+        // Get id from url
+        $id = $request->get_param( 'id' );
+        // Create repository and get event
+        $repo = new EventRepository();
+        $data = $repo->find_by_id($id);
+        // Respond
+        return new \WP_Rest_Response( $data, 200 );
+    }
+
     public function get_events_permission_check( $request ) {
+        // TODO: Implement actual permissions
+        return true;
+    }
+
+    public function get_event_permission_check( $request ) {
         // TODO: Implement actual permissions
         return true;
     }

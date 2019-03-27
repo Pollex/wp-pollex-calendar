@@ -1,6 +1,7 @@
 <?php namespace Pollex\Calendar\Repositories;
 
 use Pollex\Calendar\Models\Factories\EventFactory as EventFactory;
+use Pollex\Calendar\Exceptions\EntityNotFoundException as EntityNotFoundException;
 
 class EventRepository {
 
@@ -55,7 +56,7 @@ class EventRepository {
         $result = $wpdb->get_row($query, ARRAY_A);
         // Check existance
         if ($result == null) {
-            throw new \Exception(sprintf('EventSerie with id %d does not exist', $id));
+            throw EntityNotFoundException::create_from_entity_and_id('Event', $id);
         }
         // Return created entity from row
         return (new EventFactory())->from_array($result)->create();
