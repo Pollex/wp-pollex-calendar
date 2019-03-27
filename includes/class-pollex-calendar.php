@@ -159,7 +159,7 @@ class Pollex_Calendar {
 	private function define_api_hooks() {
 
 		$API_version = 1;
-		$plugin_api = new APIRoot( '/pollex/calendar', '/v' . $API_version );
+		$plugin_api = new APIRoot( 'pollex/calendar/v' . $API_version );
 
 		$this->loader->add_action( 'rest_api_init', $plugin_api, 'register_routes' );
 	}
