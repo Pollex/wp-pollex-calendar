@@ -24,6 +24,12 @@ class EventSerieRepository {
         return $results ? EventSerieFactory::create_multiple($results) : array();
     }
 
+    /**
+     * Find a specific instance by it's id.
+     *
+     * @param integer $id
+     * @return EventSerie
+     */
     public function find_by_id(int $id) : EventSerie {
         global $wpdb;
         $query = $wpdb->prepare(
