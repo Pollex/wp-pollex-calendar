@@ -38,4 +38,24 @@ class EventRepository {
         return EventFactory::create_multiple($results, $this->COLUMN_MAPPING);
     }
 
+    /**
+     * Find a single event by its id
+     *
+     * @param integer $id
+     * @return Event
+     */
+    public function find_by_id(int $id) {
+        global $wpdb;
+
+        // Query for single row by id
+        $query = $wpdb->prepare(
+            "SELECT * FROM $this->TABLE_NAME WHERE id=%d",
+            $id
+        );
+        $result = $wpdb->get_row($query, ARRAY_A);
+
+        // Return created entity from row
+        return (new EventFactory())->from_array($result)->create();
+    }
+
 }
