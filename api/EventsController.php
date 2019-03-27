@@ -55,13 +55,18 @@ class EventsController extends Controller{
     }
 
     public function get_event( $request ) {
+        $error = new \WP_Error( 'rest_event_invalid_id', __( 'Invalid event ID.' ), array( 'status' => 404 ) );
         // Get id from url
         $id = $request->get_param( 'id' );
         // Create repository and get event
         $repo = new EventRepository();
-        $data = $repo->find_by_id($id);
+        $event = $repo->find_by_id($id);
+        // Check if we have a result
+        if (empty( $event )) {
+            return $error;
+        }
         // Respond
-        return new \WP_Rest_Response( $data, 200 );
+        return new \WP_Rest_Response( $event, 200 );
     }
 
     public function get_events_permission_check( $request ) {
