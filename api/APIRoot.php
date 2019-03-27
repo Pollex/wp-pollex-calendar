@@ -2,15 +2,13 @@
 
 class APIRoot extends Controller {
 
-    public function __construct($base = '') {
-        $vendor = '/pollex/calendar';
-        $version = 1;
-        // Set our namespace
-        parent::__construct($base . $vendor . '/v' .  $version);
-    }
+    public function register_routes() {
+        /**
+         * Register the EventsController to the /events endpoint.
+         */
+        $events = new EventsController($this->get_full_url(), 'events');
+        $events->register_routes();
 
-    public function register_endpoints() {
-        $events = new EventsController($this->namespace . '/events');
     }
 
 }
