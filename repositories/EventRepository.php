@@ -53,7 +53,10 @@ class EventRepository {
             $id
         );
         $result = $wpdb->get_row($query, ARRAY_A);
-
+        // Check existance
+        if ($result == null) {
+            throw new \Exception(sprintf('EventSerie with id %d does not exist', $id));
+        }
         // Return created entity from row
         return (new EventFactory())->from_array($result)->create();
     }
