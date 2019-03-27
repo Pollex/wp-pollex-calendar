@@ -56,7 +56,8 @@ class EventRepository {
         $result = $wpdb->get_row($query, ARRAY_A);
         // Check existance
         if ($result == null) {
-            throw EntityNotFoundException::create_from_entity_and_id('Event', $id);
+            // throw EntityNotFoundException::create_from_entity_and_id('Event', $id);
+            return null;
         }
         // Return created entity from row
         return (new EventFactory())->from_array($result)->create();
