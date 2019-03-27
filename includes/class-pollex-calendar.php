@@ -1,5 +1,7 @@
 <?php
 
+use Pollex\Calendar\API\Pollex_Calendar_API as Pollex_Calendar_API;
+
 /**
  * The file that defines the core plugin class
  *
@@ -78,7 +80,7 @@ class Pollex_Calendar {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
+		$this->define_api_hooks();
 	}
 
 	/**
@@ -99,6 +101,11 @@ class Pollex_Calendar {
 	 */
 	private function load_dependencies() {
 
+		/**
+		 * Composer autoloader takes care of our namespaces and dependencies
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+		
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
@@ -122,6 +129,11 @@ class Pollex_Calendar {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-pollex-calendar-public.php';
 
+		/**
+		 * The class responsible for defining all the API endpoints and actions.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'api/class-pollex-calendar-api.php';
+
 		$this->loader = new Pollex_Calendar_Loader();
 
 	}
@@ -141,6 +153,19 @@ class Pollex_Calendar {
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
+	}
+	
+	/**
+	 * Register all of the hooks related to the API functionality
+	 *
+	 * @since	1.0.0
+	 * @access	private
+	 */
+	private function define_api_hooks() {
+
+		$plugin_api = new Pollex_Calendar_API();
+
+		$this->loader->add_action( 'rest_api_init', $plugin_api, 'register_endpoints' );
 	}
 
 	/**
