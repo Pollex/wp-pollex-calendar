@@ -7,6 +7,12 @@ class Entity {
         $this->id = $id;
     }
 
+    public function __get($name) {
+        if (in_array( $name, static::get_properties() )) {
+            return $this->$name;
+        }
+    }
+
     public function get_id() {
         return $this->id;
     }
