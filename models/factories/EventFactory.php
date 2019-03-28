@@ -100,7 +100,7 @@ class EventFactory {
      * @return EventFactory
      */
     public function from_array(array $array, $property_mapping = null) {
-        foreach(Event::get_properties() as $property) {
+        foreach(array_keys(get_class_vars(Event::class)) as $property) {
             // If the property is mapped, use that
             $mapped_property = $property_mapping[$property] ?? $property;
             // Check if the given array has this property from iteration
