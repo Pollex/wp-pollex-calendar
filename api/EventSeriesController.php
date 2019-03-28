@@ -24,9 +24,10 @@ class EventSeriesController extends Controller {
     }
 
     public function get_event_series( $request ) {
+        // Create repo and find all event series
         $repo = new EventSerieRepository();
         $event_series = $repo->find_all();
-
+        // Return found event series
         return new \WP_Rest_Response($event_series, 200);
     }
 
