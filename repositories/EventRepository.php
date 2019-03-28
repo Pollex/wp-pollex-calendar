@@ -45,7 +45,7 @@ class EventRepository {
      * @param integer $id
      * @return Event
      */
-    public function find_by_id(int $id) {
+    public function find_by_id(int $id) : ?Event {
         global $wpdb;
 
         // Query for single row by id
