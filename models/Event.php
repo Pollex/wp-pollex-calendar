@@ -4,11 +4,11 @@
  * Undocumented class
  */
 class Event extends Entity{
-    private $title;
-    private $description;
-    private $start;
-    private $end;
-    private $owner_id;
+    public $title;
+    public $description;
+    public $start;
+    public $end;
+    public $owner_id;
 
     public function __construct(int $id, string $title, string $description, \DateTime $start, \DateTime $end, int $owner_id) {
         parent::__construct($id);
@@ -17,39 +17,6 @@ class Event extends Entity{
         $this->start = $start;
         $this->end = $end;
         $this->owner_id = $owner_id;
-    }
-
-    public function get_title(){
-        return $this->title;
-    }
-    
-    public function get_description(){
-        return $this->description;
-    }
-
-    public function get_start(){
-        return $this->start;
-    }
-
-    public function get_end(){
-        return $this->end;
-    }
-
-    public function get_owner_id(){
-        return $this->owner_id;
-    }
-
-    public static function get_properties() {
-        return array_merge(
-            parent::get_properties(),
-            [
-                'title',
-                'description',
-                'start',
-                'end',
-                'owner_id'
-            ]
-        );
     }
 
 }
