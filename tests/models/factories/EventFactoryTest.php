@@ -22,12 +22,12 @@ class EventFactoryTest extends \WP_UnitTestCase {
             ->set_owner_id($owner_id)
             ->create();
         // Assert
-        $this->assertEquals($id, $event->get_id());
-        $this->assertEquals($title, $event->get_title());
-        $this->assertEquals($description, $event->get_description());
-        $this->assertEquals($start, $event->get_start());
-        $this->assertEquals($end, $event->get_end());
-        $this->assertEquals($owner_id, $event->get_owner_id());
+        $this->assertEquals($id, $event->id);
+        $this->assertEquals($title, $event->title);
+        $this->assertEquals($description, $event->description);
+        $this->assertEquals($start, $event->start);
+        $this->assertEquals($end, $event->end);
+        $this->assertEquals($owner_id, $event->owner_id);
     }
 
     public function test_datetime_setter_with_string() {
@@ -50,12 +50,12 @@ class EventFactoryTest extends \WP_UnitTestCase {
             ->set_owner_id($owner_id)
             ->create();
         // Assert
-        $this->assertEquals($id, $event->get_id());
-        $this->assertEquals($title, $event->get_title());
-        $this->assertEquals($description, $event->get_description());
-        $this->assertEquals($start, $event->get_start());
-        $this->assertEquals($end, $event->get_end());
-        $this->assertEquals($owner_id, $event->get_owner_id());
+        $this->assertEquals($id, $event->id);
+        $this->assertEquals($title, $event->title);
+        $this->assertEquals($description, $event->description);
+        $this->assertEquals($start, $event->start);
+        $this->assertEquals($end, $event->end);
+        $this->assertEquals($owner_id, $event->owner_id);
     }
 
     public function test_creation_from_array() {
@@ -80,12 +80,12 @@ class EventFactoryTest extends \WP_UnitTestCase {
             ->from_array($array)
             ->create();
         // Assert
-        $this->assertEquals($id, $event->get_id());
-        $this->assertEquals($title, $event->get_title());
-        $this->assertEquals($description, $event->get_description());
-        $this->assertEquals($start, $event->get_start());
-        $this->assertEquals($end, $event->get_end());
-        $this->assertEquals($owner_id, $event->get_owner_id());
+        $this->assertEquals($id, $event->id);
+        $this->assertEquals($title, $event->title);
+        $this->assertEquals($description, $event->description);
+        $this->assertEquals($start, $event->start);
+        $this->assertEquals($end, $event->end);
+        $this->assertEquals($owner_id, $event->owner_id);
     }
 
     public function test_creation_from_arrays() {
@@ -118,7 +118,7 @@ class EventFactoryTest extends \WP_UnitTestCase {
         // Act
         $events = EventFactory::create_multiple($arrays);
         // Sort returned event titles
-        $event_titles = array_map(function($event) { return $event->get_title(); }, $events);
+        $event_titles = array_map(function($event) { return $event->title; }, $events);
         sort($event_titles);
         // Sort expected titles
         $expected_event_titles = array_map(function($array) { return $array['title']; }, $arrays);

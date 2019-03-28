@@ -11,13 +11,11 @@ class EntityTest extends WP_UnitTestCase {
     public function test_read_only_properties() {
         // Arrange
         $entity = new Entity(5);
-        $this->assertEquals(5, $entity->get_id());
         $this->assertEquals(5, $entity->id);
         // Act
         $this->setExpectedException('Error');
         $entity->id = 12;
         // Assert
-        $this->assertEquals(5, $entity->get_id());
         $this->assertEquals(5, $entity->id);
     }
 

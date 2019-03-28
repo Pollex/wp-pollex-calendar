@@ -14,12 +14,12 @@ class EventTest extends \WP_UnitTestCase {
         // Act
         $event = new Event($id, $title, $description, $start, $end, $owner_id);
         // Assert
-        $this->assertEquals($id, $event->get_id());
-        $this->assertEquals($title, $event->get_title());
-        $this->assertEquals($description, $event->get_description());
-        $this->assertEquals($start, $event->get_start());
-        $this->assertEquals($end, $event->get_end());
-        $this->assertEquals($owner_id, $event->get_owner_id());
+        $this->assertEquals($id, $event->id);
+        $this->assertEquals($title, $event->title);
+        $this->assertEquals($description, $event->description);
+        $this->assertEquals($start, $event->start);
+        $this->assertEquals($end, $event->end);
+        $this->assertEquals($owner_id, $event->owner_id);
     }
 
 }
