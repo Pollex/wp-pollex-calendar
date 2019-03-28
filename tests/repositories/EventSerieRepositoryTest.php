@@ -60,20 +60,20 @@ class EventSerieRepositoryTest extends \WP_UnitTestCase {
         $repo = new EventSerieRepository();
         $expected_serie = $repo->find_all()[0];
         // Act
-        $event_serie = $repo->find_by_id($expected_serie->get_id());
+        $event_serie = $repo->find_by_id($expected_serie->id);
         // Assert
         $this->assertInstanceOf(EventSerie::class, $event_serie);
-        $this->assertEquals($expected_serie->get_id(), $event_serie->get_id());
-        $this->assertEquals($expected_serie->get_type(), $event_serie->get_type());
+        $this->assertEquals($expected_serie->id, $event_serie->id);
+        $this->assertEquals($expected_serie->type, $event_serie->type);
     }
 
-    public function test_find_by_id_should_throw_for_not_existing() {
+    public function test_find_by_id_null_for_not_existing() {
         // Arrange
         $repo = new EventSerieRepository();
-        // Expect exception
-        $this->setExpectedException(\Exception::class);
         // Act
         $event_serie = $repo->find_by_id(999);
+        // Assert
+        $this->assertEquals(null, $event_serie);
     }
 
 }

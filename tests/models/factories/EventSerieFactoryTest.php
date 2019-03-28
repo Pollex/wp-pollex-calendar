@@ -14,8 +14,8 @@ class EventSerieFactoryTest extends \WP_UnitTestCase {
             ->set_type($type)
             ->create();
         // Assert
-        $this->assertEquals($id, $event_serie->get_id());
-        $this->assertEquals($type, $event_serie->get_type());
+        $this->assertEquals($id, $event_serie->id);
+        $this->assertEquals($type, $event_serie->type);
     }
 
     public function test_creation_from_array() {
@@ -31,8 +31,8 @@ class EventSerieFactoryTest extends \WP_UnitTestCase {
             ->from_array($array)
             ->create();
         // Assert
-        $this->assertEquals($id, $event_serie->get_id());
-        $this->assertEquals($type, $event_serie->get_type());
+        $this->assertEquals($id, $event_serie->id);
+        $this->assertEquals($type, $event_serie->type);
     }
 
     public function test_creation_from_arrays() {
@@ -53,7 +53,7 @@ class EventSerieFactoryTest extends \WP_UnitTestCase {
         // Act
         $event_series = EventSerieFactory::create_multiple($arrays);
         // Map and sort ids
-        $event_serie_ids = array_map(function ($event_serie) { return $event_serie->get_id(); }, $event_series);
+        $event_serie_ids = array_map(function ($event_serie) { return $event_serie->id; }, $event_series);
         sort($event_serie_ids);
         // Map and sort expected ids
         $expected_event_serie_ids = array_map(function ($array) { return $array['id']; }, $arrays);

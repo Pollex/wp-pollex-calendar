@@ -30,7 +30,7 @@ class EventSerieRepository {
      * @param integer $id
      * @return EventSerie
      */
-    public function find_by_id(int $id) : EventSerie {
+    public function find_by_id(int $id) : ?EventSerie {
         global $wpdb;
         $query = $wpdb->prepare(
             "SELECT * FROM $this->TABLE_NAME WHERE id=%d;",

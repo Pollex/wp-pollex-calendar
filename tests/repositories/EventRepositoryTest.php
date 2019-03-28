@@ -54,7 +54,7 @@ class EventRepositoryTest extends \WP_UnitTestCase {
         // Act
         $events = $repo->find_all_in_period($from, $to, $inclusive);
         // Get all the titles as array
-        $titles = array_map(function ($event) { return $event->get_title(); }, $events);
+        $titles = array_map(function ($event) { return $event->title; }, $events);
         sort($titles);
         sort($expected_titles);
         // Assert
