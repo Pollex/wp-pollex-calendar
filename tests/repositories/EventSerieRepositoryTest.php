@@ -67,13 +67,13 @@ class EventSerieRepositoryTest extends \WP_UnitTestCase {
         $this->assertEquals($expected_serie->type, $event_serie->type);
     }
 
-    public function test_find_by_id_should_throw_for_not_existing() {
+    public function test_find_by_id_null_for_not_existing() {
         // Arrange
         $repo = new EventSerieRepository();
-        // Expect exception
-        $this->setExpectedException(\Exception::class);
         // Act
         $event_serie = $repo->find_by_id(999);
+        // Assert
+        $this->assertEquals(null, $event_serie);
     }
 
 }
