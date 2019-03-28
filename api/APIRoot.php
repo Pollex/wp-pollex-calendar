@@ -7,7 +7,9 @@ class APIRoot extends Controller {
          * Register the EventsController to the /events endpoint.
          */
         $events = new EventsController($this->get_full_url(), 'events');
+        $event_series = new EventSeriesController($this->get_full_url(), 'event-series');
         $events->register_routes();
+        $event_series->register_routes();
 
     }
 
