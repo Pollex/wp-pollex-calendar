@@ -14,8 +14,8 @@ class EventsController extends Controller{
         register_rest_route($this->namespace, $this->base, array(
             array(
                 'methods' => \WP_REST_Server::READABLE,
-                'callback' => array( $this, 'get_events' ),
-                'permission_callback' => array( $this, 'get_events_permission_check' ),
+                'callback' => array( $this, 'get_items' ),
+                'permission_callback' => array( $this, 'get_items_permission_check' ),
                 'args' => array(
                     'start' => array(
                         'required' => true,
@@ -32,8 +32,8 @@ class EventsController extends Controller{
         register_rest_route($this->namespace, $this->base . '/(?P<id>\d+)', array(
             array (
                 'methods' => \WP_REST_Server::READABLE,
-                'callback' => array( $this, 'get_event' ),
-                'permission_callback' => array( $this, 'get_event_permission_check' ),
+                'callback' => array( $this, 'get_item' ),
+                'permission_callback' => array( $this, 'get_item_permission_check' ),
                 'args' => array(
                     'id' => array(
                         'validate_callback' => 'is_numeric'
@@ -43,7 +43,7 @@ class EventsController extends Controller{
         ));
     }
 
-    public function get_events( $request ) {
+    public function get_items( $request ) {
         // Parse start and end datetimes
         $start = new \DateTime($request->get_param('start'));
         $end = new \DateTime($request->get_param('end'));
@@ -54,7 +54,7 @@ class EventsController extends Controller{
         return new \WP_Rest_Response( $data, 200 );
     }
 
-    public function get_event( $request ) {
+    public function get_item( $request ) {
         $error = new \WP_Error( 'rest_event_invalid_id', __( 'Invalid event ID.' ), array( 'status' => 404 ) );
         // Get id from url
         $id = $request->get_param( 'id' );
@@ -69,12 +69,12 @@ class EventsController extends Controller{
         return new \WP_Rest_Response( $event, 200 );
     }
 
-    public function get_events_permission_check( $request ) {
+    public function get_items_permission_check( $request ) {
         // TODO: Implement actual permissions
         return true;
     }
 
-    public function get_event_permission_check( $request ) {
+    public function get_item_permission_check( $request ) {
         // TODO: Implement actual permissions
         return true;
     }
