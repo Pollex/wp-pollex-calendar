@@ -26,7 +26,8 @@ class EventsController extends Controller{
                         'validate_callback' => 'rest_parse_date'
                     )
                 )
-            )
+            ),
+            'schema' => 'get_public_item_schema'
         ));
         // URL: /events/{id}
         register_rest_route($this->namespace, $this->base . '/(?P<id>\d+)', array(
@@ -40,6 +41,7 @@ class EventsController extends Controller{
                     )
                 )
             ),
+            'schema' => 'get_public_item_schema'
         ));
     }
 
@@ -77,6 +79,37 @@ class EventsController extends Controller{
     public function get_item_permission_check( $request ) {
         // TODO: Implement actual permissions
         return true;
+    }
+
+    public function get_item_schema() {
+		$schema = array(
+			'$schema'    => 'http://json-schema.org/draft-07/schema#',
+			'title'      => 'event',
+			'type'       => 'object',
+			'properties' => array(
+                'title' => array(
+                    'type' => 'string'
+                ),
+                'description' => array(
+                    'type' => 'string'
+                ),
+                'start' => array(
+					'type'        => 'string',
+					'format'      => 'date-time',
+                ),
+                'end' => array(
+					'type'        => 'string',
+					'format'      => 'date-time',
+                )
+            ),
+            'required' => array(
+                'title',
+                'description',
+                'start',
+                'end'
+            )
+        );
+        return $schema;
     }
 
 }
