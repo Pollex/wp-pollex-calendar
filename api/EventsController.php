@@ -2,6 +2,7 @@
 
 use Pollex\Calendar\Repositories\EventRepository as EventRepository;
 use Pollex\Calendar\Models\Event as Event;
+use Pollex\Calendar\Models\Factories\EventFactory;
 
 class EventsController extends Controller{
 
@@ -28,7 +29,13 @@ class EventsController extends Controller{
                     )
                 )
             ),
-            'schema' => 'get_public_item_schema'
+            array(
+                'methods' => \WP_REST_Server::CREATABLE,
+                'callback' => array( $this, 'create_item' ),
+                'permissions_callback' => array( $this, 'create_item_permissions_check'),
+                'args' => $this->get_endpoint_args_for_item_schema(\WP_REST_Server::CREATABLE)
+            ),
+            'schema' => array( $this, 'get_item_schema' )
         ));
         // URL: /events/{id}
         register_rest_route($this->namespace, $this->base . '/(?P<id>\d+)', array(
@@ -44,7 +51,7 @@ class EventsController extends Controller{
                     )
                 )
             ),
-            'schema' => 'get_public_item_schema'
+            'schema' => array( $this, 'get_item_schema' )
         ));
     }
 
@@ -79,6 +86,26 @@ class EventsController extends Controller{
         // Prepare for response
         $data = $this->prepare_item_for_response($event, $request);
         // Respond
+        return new \WP_Rest_Response( $data, 200 );
+    }
+
+    public function create_item( $request ) {
+        $body = $request->get_params();
+        // Id should not be set
+        if (!empty($body['id'])) {
+            return new WP_Error('rest_event_exists', __('Cannot create existing event.'), array('status' => 400 ) );
+        }
+        // Create a model from the body
+        $event = (new EventFactory())
+            ->from_array((array)$body)
+            ->set_owner_id(get_current_user_id())
+            ->create();
+        // Save event to repository
+        $repo = new EventRepository();
+        $repo->save($event);
+        // Prepare for response
+        $data = $this->prepare_item_for_response($event, $request);
+        // Return created event
         return new \WP_Rest_Response( $data, 200 );
     }
 
