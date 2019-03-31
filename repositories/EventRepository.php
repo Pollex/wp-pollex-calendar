@@ -1,5 +1,6 @@
 <?php namespace Pollex\Calendar\Repositories;
 
+use Pollex\Calendar\Models\Event as Event;
 use Pollex\Calendar\Models\Factories\EventFactory as EventFactory;
 use Pollex\Calendar\Exceptions\EntityNotFoundException as EntityNotFoundException;
 
@@ -60,7 +61,7 @@ class EventRepository {
             return null;
         }
         // Return created entity from row
-        return (new EventFactory())->from_array($result)->create();
+        return (new EventFactory())->from_array($result, $this->COLUMN_MAPPING)->create();
     }
 
 }
