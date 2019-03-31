@@ -2,7 +2,6 @@
 
 use Pollex\Calendar\Models\Event as Event;
 use Pollex\Calendar\Models\Factories\EventFactory as EventFactory;
-use Pollex\Calendar\Exceptions\EntityNotFoundException as EntityNotFoundException;
 
 class EventRepository {
 
@@ -15,6 +14,30 @@ class EventRepository {
     public function __construct() {
         global $wpdb;
         $this->TABLE_NAME = $wpdb->prefix . $this->TABLE_NAME;
+    }
+
+    /**
+     * Saves an event to the repository
+     *
+     * @param Event $model
+     * @return Event 
+     */
+    public function save(Event &$model)
+    {
+        global $wpdb;
+        // Create a database row from the given model
+        $row = $this->create_row_from_model($model);
+        // Todo: Decide what we do with an insert fail
+        // Update model
+        $wpdb->replace(
+            $this->TABLE_NAME,
+            $row
+        );
+        // Ensure id is set
+        $row['id'] = $wpdb->insert_id;
+        // Create a new model, change reference and return
+        $model = $this->create_model_from_row($row);
+        return $model;
     }
 
     /**
