@@ -10,7 +10,7 @@ class Event extends Entity{
     public $end;
     public $owner_id;
 
-    public function __construct(int $id, string $title, string $description, \DateTime $start, \DateTime $end, int $owner_id) {
+    public function __construct(?int $id, string $title, string $description, \DateTime $start, \DateTime $end, int $owner_id) {
         parent::__construct($id);
         $this->title = $title;
         $this->description = $description;
