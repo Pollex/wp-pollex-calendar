@@ -8,8 +8,8 @@ class EventRepository {
 
     private $TABLE_NAME = 'pollex_calendar_events';
     private $COLUMN_MAPPING = array(
-        'start' => 'start_datetime',
-        'end' => 'end_datetime'
+        'start_datetime' => 'start',
+        'end_datetime' => 'end'
     );
 
     public function __construct() {
@@ -35,9 +35,9 @@ class EventRepository {
             $from,
             $to
         );
-        $results = $wpdb->get_results($query, ARRAY_A);
+        $rows = $wpdb->get_results($query, ARRAY_A);
 
-        return EventFactory::create_multiple($results, $this->COLUMN_MAPPING);
+        return $this->create_models_from_rows($rows);
     }
 
     /**
@@ -54,14 +54,51 @@ class EventRepository {
             "SELECT * FROM $this->TABLE_NAME WHERE id=%d",
             $id
         );
-        $result = $wpdb->get_row($query, ARRAY_A);
+        $row = $wpdb->get_row($query, ARRAY_A);
         // Check existance
-        if ($result == null) {
+        if ($row == null) {
             // throw EntityNotFoundException::create_from_entity_and_id('Event', $id);
             return null;
         }
         // Return created entity from row
-        return (new EventFactory())->from_array($result, $this->COLUMN_MAPPING)->create();
+        return $this->create_model_from_row($row);
+    }
+
+    /**
+     * Prepares a database row for model creation
+     *
+     * @param array $row
+     * @return array
+     */
+    protected function create_model_from_row(array $row) {
+        // Map keys
+        $this->array_replace_key($row, $this->COLUMN_MAPPING);
+        // Create event instance
+        return (new EventFactory())->from_array($row)->create();
+    }
+
+    /**
+     * Prepares multiple database rows for model creation
+     *
+     * @param array $row
+     * @return array
+     */
+    protected function create_models_from_rows(array $rows)
+    {
+        foreach($rows as &$row) {
+            $this->array_replace_key($row, $this->COLUMN_MAPPING);
+        }
+        return EventFactory::create_multiple($rows, $this->COLUMN_MAPPING);
+    }
+
+    protected function array_replace_key(array &$array, array $mapping) {
+        foreach( $array as $key => $value ) {
+            // Check if key is mapped
+            if ( array_key_exists($key, $mapping) ) {
+                $array[$mapping[$key]] = $value;
+                unset($array[$key]);
+            }
+        }
     }
 
 }
