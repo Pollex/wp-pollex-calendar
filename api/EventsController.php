@@ -17,7 +17,7 @@ class EventsController extends Controller{
             array(
                 'methods' => \WP_REST_Server::READABLE,
                 'callback' => array( $this, 'get_items' ),
-                'permission_callback' => array( $this, 'get_items_permission_check' ),
+                'permission_callback' => array( $this, 'get_items_permissions_check' ),
                 'args' => array(
                     'start' => array(
                         'required' => true,
@@ -42,7 +42,7 @@ class EventsController extends Controller{
             array (
                 'methods' => \WP_REST_Server::READABLE,
                 'callback' => array( $this, 'get_item' ),
-                'permission_callback' => array( $this, 'get_item_permission_check' ),
+                'permission_callback' => array( $this, 'get_item_permissions_check' ),
                 'args' => array(
                     'id' => array(
                         'validate_callback' => function($param, $request, $key) {
@@ -109,12 +109,12 @@ class EventsController extends Controller{
         return new \WP_Rest_Response( $data, 200 );
     }
 
-    public function get_items_permission_check( $request ) {
+    public function get_items_permissions_check( $request ) {
         // TODO: Implement actual permissions
         return true;
     }
 
-    public function get_item_permission_check( $request ) {
+    public function get_item_permissions_check( $request ) {
         // TODO: Implement actual permissions
         return true;
     }
