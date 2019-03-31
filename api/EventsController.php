@@ -119,6 +119,12 @@ class EventsController extends Controller{
         return true;
     }
 
+    public function create_item_permissions_check($request)
+    {
+        // TODO: Implement actual permissions
+        return true;
+    }
+
     public function prepare_item_for_response( $event, $request ) {
         $response = (array)$event;
         // Format datetime objects
