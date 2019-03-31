@@ -21,13 +21,13 @@ class EventSerieRepository {
         global $wpdb;
         $query = "SELECT * FROM $this->TABLE_NAME;";
         $results = $wpdb->get_results($query, ARRAY_A);
-        return $results ? EventSerieFactory::create_multiple($results) : array();
+        return $results ? $this->create_models_from_rows($results) : array();
     }
 
     /**
      * Find a specific instance by it's id.
      *
-     * @param integer $id
+     * @param int $id
      * @return EventSerie
      */
     public function find_by_id(int $id) : ?EventSerie {
@@ -36,12 +36,50 @@ class EventSerieRepository {
             "SELECT * FROM $this->TABLE_NAME WHERE id=%d;",
             $id
         );
-        $result = $wpdb->get_row($query, ARRAY_A);
+        $row = $wpdb->get_row($query, ARRAY_A);
         // Check existance
-        if ($result == null) {
+        if ($row == null) {
             return null;
         }
         // Return
-        return (new EventSerieFactory())->from_array($result)->create();
+        return $this->create_model_from_row($row);
+    }
+
+    /**
+     * Prepares a row for the database from a model
+     *
+     * @param EventSerie $model
+     * @return array
+     */
+    protected function create_row_from_model(EventSerie $model)
+    {
+        // Create array for database
+        $row = array(
+            'id' => $model->id,
+            'type' => $model->type
+        );
+        return $row;
+    }
+
+    /**
+     * Prepares a database row for model creation
+     *
+     * @param array $row
+     * @return array
+     */
+    protected function create_model_from_row(array $row)
+    {
+        return (new EventSerieFactory())->from_array($row)->create();
+    }
+
+    /**
+     * Prepares multiple database rows for model creation
+     *
+     * @param array $row
+     * @return array
+     */
+    protected function create_models_from_rows(array $rows)
+    {
+        return EventSerieFactory::create_multiple($rows);
     }
 }
