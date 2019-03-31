@@ -76,8 +76,8 @@ class EventRepository {
             'id' => $model->id,
             'title' => $model->title,
             'description' => $model->description,
-            'start_datetime' => $model->start,
-            'end_datetime' => $model->end,
+            'start_datetime' => $model->start->format(\DateTime::ATOM),
+            'end_datetime' => $model->end->format(\DateTime::ATOM),
             'owner_id' => $model->owner_id
         );
         return $row;
