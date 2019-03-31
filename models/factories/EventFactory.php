@@ -2,7 +2,7 @@
 
 use Pollex\Calendar\Models\Event as Event;
 
-class EventFactory {
+class EventFactory extends Factory {
 
     private $id;
     private $title;
@@ -93,25 +93,6 @@ class EventFactory {
     }
 
     /**
-     * For every property that exists, copy the value to the
-     * event being created
-     *
-     * @param array $array
-     * @return EventFactory
-     */
-    public function from_array(array $array) {
-        // Loop key values in array and set accordingly
-        foreach($array as $key => $value) {
-            // Check if setter exists
-            if (in_array( 'set_' . $key, get_class_methods($this))) {
-                call_user_func(array( $this, 'set_' . $key), $value);
-            }
-        }
-        // Allow chaining
-        return $this;
-    }
-
-    /**
      * Return the created event
      *
      * @return Event
@@ -125,24 +106,6 @@ class EventFactory {
             $this->end,
             $this->owner_id
         );
-    }
-
-    /*
-        Static utilities
-    */
-
-    /**
-     * Create multiple Events from arrays
-     *
-     * @param array $array
-     * @return Event[*]
-     */
-    public static function create_multiple(array $array) {
-        // Map each array in $array to a event model
-        $events = array_map(function($single_array) {
-            return (new static())->from_array($single_array)->create();
-        }, $array);
-        return $events;
     }
 
 }
