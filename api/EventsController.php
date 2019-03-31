@@ -1,6 +1,7 @@
 <?php namespace Pollex\Calendar\API;
 
 use Pollex\Calendar\Repositories\EventRepository as EventRepository;
+use Pollex\Calendar\Models\Event as Event;
 
 class EventsController extends Controller{
 
@@ -37,7 +38,9 @@ class EventsController extends Controller{
                 'permission_callback' => array( $this, 'get_item_permission_check' ),
                 'args' => array(
                     'id' => array(
-                        'validate_callback' => 'is_numeric'
+                        'validate_callback' => function($param, $request, $key) {
+                            return is_numeric($param);
+                        }
                     )
                 )
             ),
@@ -51,7 +54,13 @@ class EventsController extends Controller{
         $end = new \DateTime($request->get_param('end'));
         // Create a repository and request the data
         $repo = new EventRepository();
-        $data = $repo->find_all_in_period($start, $end);
+        $events = $repo->find_all_in_period($start, $end);
+        // Prepare for response
+        $data = [];
+        foreach ($events as $event) {
+            $prepared_event = $this->prepare_item_for_response($event, $request);
+            $data[] = $this->prepare_response_for_collection($prepared_event);
+        }
         // Respond with data
         return new \WP_Rest_Response( $data, 200 );
     }
@@ -67,8 +76,10 @@ class EventsController extends Controller{
         if (empty( $event )) {
             return $error;
         }
+        // Prepare for response
+        $data = $this->prepare_item_for_response($event, $request);
         // Respond
-        return new \WP_Rest_Response( $event, 200 );
+        return new \WP_Rest_Response( $data, 200 );
     }
 
     public function get_items_permission_check( $request ) {
@@ -79,6 +90,14 @@ class EventsController extends Controller{
     public function get_item_permission_check( $request ) {
         // TODO: Implement actual permissions
         return true;
+    }
+
+    public function prepare_item_for_response( $event, $request ) {
+        $response = (array)$event;
+        // Format datetime objects
+        $response['start'] = $event->start->format(\DateTime::ATOM);
+        $response['end'] = $event->end->format(\DateTime::ATOM);
+        return $response;
     }
 
     public function get_item_schema() {
