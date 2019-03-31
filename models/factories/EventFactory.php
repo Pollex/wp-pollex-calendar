@@ -143,13 +143,11 @@ class EventFactory {
      * @param array $array
      * @return Event[*]
      */
-    public static function create_multiple(array $array, array $property_mapping = null) {
-        // var_dump($array);
-        $events = [];
-        foreach ($array as $_ => $mapping) {
-            $event = (new static())->from_array($mapping, $property_mapping)->create();
-            array_push($events, $event);
-        }
+    public static function create_multiple(array $array) {
+        // Map each array in $array to a event model
+        $events = array_map(function($single_array) {
+            return (new static())->from_array($single_array)->create();
+        }, $array);
         return $events;
     }
 
