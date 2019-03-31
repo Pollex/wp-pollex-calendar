@@ -130,7 +130,7 @@ class EventRepository {
         foreach($rows as &$row) {
             $this->array_replace_key($row, $this->COLUMN_MAPPING);
         }
-        return EventFactory::create_multiple($rows, $this->COLUMN_MAPPING);
+        return EventFactory::create_multiple($rows);
     }
 
     protected function array_replace_key(array &$array, array $mapping) {
