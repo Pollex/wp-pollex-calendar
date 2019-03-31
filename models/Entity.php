@@ -3,7 +3,7 @@
 class Entity {
     public $id;
 
-    public function __construct($id) {
+    public function __construct(?int $id = null) {
         $this->id = $id;
     }
 }
