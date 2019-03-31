@@ -1,6 +1,7 @@
 <?php namespace Pollex\Calendar\API;
 
 use Pollex\Calendar\Repositories\EventSerieRepository as EventSerieRepository;
+use Pollex\Calendar\Models\Factories\EventSerieFactory;
 
 class EventSeriesController extends Controller {
 
@@ -16,10 +17,15 @@ class EventSeriesController extends Controller {
                 'methods' => \WP_REST_Server::READABLE,
                 'callback' => array( $this, 'get_items' ),
                 'permission_callback' => array( $this, 'get_items_permission_check' ),
-                'args' => array(
-
-                )
-            )
+                'args' => array()
+            ),
+            array(
+                'methods' => \WP_REST_Server::CREATABLE,
+                'callback' => array( $this, 'create_item' ),
+                'permission_callback' => array( $this, 'create_item_permissions_check' ),
+                'args' => $this->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE )
+            ),
+            'schema' => array( $this, 'get_item_schema' )
         ));
     }
 
@@ -31,8 +37,56 @@ class EventSeriesController extends Controller {
         return new \WP_Rest_Response($event_series, 200);
     }
 
+    public function create_item( $request ) {
+        $body = $request->get_params();
+        // Id should not be set
+        if (!empty($body['id'])) {
+            return new WP_Error('rest_event_exists', __('Cannot create existing event.'), array('status' => 400));
+        }
+        // Create model
+        $event_serie = (new EventSerieFactory())
+            ->from_array($body)
+            ->create();
+        //
+        $repo = new EventSerieRepository();
+        $repo->save($event_serie);
+        // Prepare for response
+        $data = $this->prepare_item_for_response($event_serie, $request);
+        // Return created event
+        return new \WP_Rest_Response($data, 200 );
+    }
+
     public function get_items_permission_check( $request ) {
         return true;
+    }
+    
+    public function create_item_permissions_check( $request )
+    {
+        return true;
+    }
+
+    public function prepare_item_for_response($event_serie, $request)
+    {
+        $response = (array)$event_serie;
+        return $response;
+    }
+
+    public function get_item_schema()
+    {
+        $schema = array(
+            '$schema'    => 'http://json-schema.org/draft-07/schema#',
+            'title'      => 'event_serie',
+            'type'       => 'object',
+            'properties' => array(
+                'type' => array(
+                    'type' => 'integer'
+                )
+            ),
+            'required' => array(
+                'type'
+            )
+        );
+        return $schema;
     }
 
 }
