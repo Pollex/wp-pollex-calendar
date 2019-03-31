@@ -99,18 +99,12 @@ class EventFactory {
      * @param array $array
      * @return EventFactory
      */
-    public function from_array(array $array, $property_mapping = null) {
-        foreach(array_keys(get_class_vars(Event::class)) as $property) {
-            // If the property is mapped, use that
-            $mapped_property = $property_mapping[$property] ?? $property;
-            // Check if the given array has this property from iteration
-            $array_has_key = array_key_exists($mapped_property, $array);
-            // Check if factory contains a setter method for this property
-            $setter_method = "set_$property";
-            $key_has_setter = in_array($setter_method, \get_class_methods(static::class));
-            // If array has key and factory has a setter for it, apply it
-            if ($array_has_key && $key_has_setter) {
-                $this->$setter_method($array[$mapped_property]);
+    public function from_array(array $array) {
+        // Loop key values in array and set accordingly
+        foreach($array as $key => $value) {
+            // Check if setter exists
+            if (in_array( 'set_' . $key, get_class_methods($this))) {
+                call_user_func(array( $this, 'set_' . $key), $value);
             }
         }
         // Allow chaining
