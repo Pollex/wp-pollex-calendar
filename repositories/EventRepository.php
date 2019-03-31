@@ -65,6 +65,25 @@ class EventRepository {
     }
 
     /**
+     * Prepares a row for the database from a model
+     *
+     * @param Event $model
+     * @return array
+     */
+    protected function create_row_from_model(Event $model) {
+        // Create array for database
+        $row = array(
+            'id' => $model->id,
+            'title' => $model->title,
+            'description' => $model->description,
+            'start_datetime' => $model->start,
+            'end_datetime' => $model->end,
+            'owner_id' => $model->owner_id
+        );
+        return $row;
+    }
+
+    /**
      * Prepares a database row for model creation
      *
      * @param array $row
