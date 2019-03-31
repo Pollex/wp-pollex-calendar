@@ -2,6 +2,7 @@
 
 use Pollex\Calendar\Repositories\EventSerieRepository as EventSerieRepository;
 use Pollex\Calendar\Models\EventSerie as EventSerie;
+use Pollex\Calendar\Models\Factories\EventSerieFactory;
 
 class EventSerieRepositoryTest extends \WP_UnitTestCase {
     
@@ -73,7 +74,37 @@ class EventSerieRepositoryTest extends \WP_UnitTestCase {
         // Act
         $event_serie = $repo->find_by_id(999);
         // Assert
-        $this->assertEquals(null, $event_serie);
+        $this->assertEquals(null,$event_serie);
+    }
+
+    public function test_save_as_insert()
+    {
+        // Arrange
+        $repo = new EventSerieRepository();
+        $event_serie = (new EventSerieFactory())
+            ->set_type(1)
+            ->create();
+        // Act
+        $repo->save($event_serie);
+        // Assert
+        $this->assertFalse(empty($event_serie->id), 'EventSerie id should be set after insert');
+    }
+
+    public function test_save_as_replace()
+    {
+        // Arrange
+        $repo = new EventSerieRepository();
+        $event_serie = $repo->find_all()[0];
+        $old_type = $event_serie->type;
+        $new_type = 100;
+        // Act
+        $event_serie->type = $new_type;
+        $repo->save($event_serie);
+        // Assert
+        // Re-Query same event to make sure it comes from the database
+        $event_serie_2 = $repo->find_all()[0];
+        $this->assertEquals($new_type, $event_serie_2->type);
+        
     }
 
 }

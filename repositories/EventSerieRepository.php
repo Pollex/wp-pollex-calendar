@@ -13,6 +13,30 @@ class EventSerieRepository {
     }
 
     /**
+     * Saves an EventSerie to the repository
+     *
+     * @param EventSerie $model
+     * @return EventSerie 
+     */
+    public function save(EventSerie &$model)
+    {
+        global $wpdb;
+        // Create a database row from the given model
+        $row = $this->create_row_from_model($model);
+        // Todo: Decide what we do with an insert fail
+        // Update model
+        $wpdb->replace(
+            $this->TABLE_NAME,
+            $row
+        );
+        // Ensure id is set
+        $row['id'] = $wpdb->insert_id;
+        // Create a new model, change reference and return
+        $model = $this->create_model_from_row($row);
+        return $model;
+    }
+
+    /**
      * Retrieve all event series
      *
      * @return EventSerie[*]
