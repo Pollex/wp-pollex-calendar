@@ -49,7 +49,7 @@ class EventSeriesController extends Controller {
         $body = $request->get_params();
         // Id should not be set
         if (!empty($body['id'])) {
-            return new WP_Error('rest_event_exists', __('Cannot create existing event.'), array('status' => 400));
+            return new WP_Error('rest_event_serie_exists', __('Cannot create existing eventserie.'), array('status' => 400));
         }
         // Save item
         // either create or update, if id exists or not respectively
@@ -61,7 +61,7 @@ class EventSeriesController extends Controller {
         $body = $request->get_params();
         // Id should not be set
         if (empty($body['id'])) {
-            return new WP_Error('rest_event_missing_id', __('Cannot update without id.'), array('status' => 400));
+            return new WP_Error('rest_event_serie_missing_id', __('Cannot update without id.'), array('status' => 400));
         }
         // Save item
         // either create or update, if id exists or not respectively
