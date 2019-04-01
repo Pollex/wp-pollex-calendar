@@ -27,6 +27,14 @@ class EventSeriesController extends Controller {
             ),
             'schema' => array( $this, 'get_item_schema' )
         ));
+        register_rest_route($this->namespace, $this->base . '/(?P<id>\d+)', array(
+            array(
+                'methods' => \WP_REST_Server::EDITABLE,
+                'callback' => array( $this, 'update_item' ),
+                'permission_callback' => array( $this, 'update_item_permissions_check' ),
+                'args' => $this->get_endpoint_args_for_item_schema( \WP_REST_Server::EDITABLE )
+            )
+        ));
     }
 
     public function get_items( $request ) {
@@ -42,6 +50,27 @@ class EventSeriesController extends Controller {
         // Id should not be set
         if (!empty($body['id'])) {
             return new WP_Error('rest_event_exists', __('Cannot create existing event.'), array('status' => 400));
+        }
+        // Save item
+        // either create or update, if id exists or not respectively
+        return $this->save_item($request, $body);
+    }
+
+    public function update_item( $request )
+    {
+        $body = $request->get_params();
+        // Id should not be set
+        if (empty($body['id'])) {
+            return new WP_Error('rest_event_missing_id', __('Cannot update without id.'), array('status' => 400));
+        }
+        // Save item
+        // either create or update, if id exists or not respectively
+        return $this->save_item($request, $body);
+    }
+
+    public function save_item( $request, $body = null ) {
+        if (empty($body)) {
+            $body = $request->get_params();
         }
         // Create model
         $event_serie = (new EventSerieFactory())
@@ -61,6 +90,11 @@ class EventSeriesController extends Controller {
     }
     
     public function create_item_permissions_check( $request )
+    {
+        return true;
+    }
+
+    public function update_item_permissions_check($request)
     {
         return true;
     }
