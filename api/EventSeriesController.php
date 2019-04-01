@@ -29,6 +29,18 @@ class EventSeriesController extends Controller {
         ));
         register_rest_route($this->namespace, $this->base . '/(?P<id>\d+)', array(
             array(
+                'methods' => \WP_REST_Server::READABLE,
+                'callback' => array( $this, 'get_item' ),
+                'permission_callback' => array( $this, 'get_item_permissions_check' ),
+                'args' => array(
+                    'id' => array(
+                        'validate_callback' => function( $param, $request, $key) {
+                            return is_numeric($param);
+                        }
+                    )
+                )
+            ),
+            array(
                 'methods' => \WP_REST_Server::EDITABLE,
                 'callback' => array( $this, 'update_item' ),
                 'permission_callback' => array( $this, 'update_item_permissions_check' ),
@@ -43,6 +55,22 @@ class EventSeriesController extends Controller {
         $event_series = $repo->find_all();
         // Return found event series
         return new \WP_Rest_Response($event_series, 200);
+    }
+
+    public function get_item( $request )
+    {
+        $error = new \WP_Error('rest_event_serie_invalid_id', __('Invalid eventserie ID.'), array('status' => 404));
+        // Get id
+        $id = $request->get_param( 'id' );
+        // Retrieve item
+        $repo = new EventSerieRepository();
+        $event_serie = $repo->find_by_id($id);
+        // Check if empty
+        if( empty($event_serie) ) {
+            return $error;
+        }
+        // Return item
+        return $this->prepare_item_for_response($event_serie, $request);
     }
 
     public function create_item( $request ) {
@@ -86,6 +114,11 @@ class EventSeriesController extends Controller {
     }
 
     public function get_items_permissions_check( $request ) {
+        return true;
+    }
+
+    public function get_item_permissions_check($request)
+    {
         return true;
     }
     
