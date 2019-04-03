@@ -12,6 +12,7 @@ class EventFactoryTest extends \WP_UnitTestCase {
         $start = new DateTime('01-03-2019T12:00:00Z');
         $end = new DateTime('01-03-2019T13:00:00Z');
         $owner_id = 1;
+        $serie_id = 1;
         // Act
         $event = (new EventFactory())
             ->set_id($id)
@@ -20,6 +21,7 @@ class EventFactoryTest extends \WP_UnitTestCase {
             ->set_start($start)
             ->set_end($end)
             ->set_owner_id($owner_id)
+            ->set_serie_id($serie_id)
             ->create();
         // Assert
         $this->assertEquals($id, $event->id);
@@ -28,6 +30,7 @@ class EventFactoryTest extends \WP_UnitTestCase {
         $this->assertEquals($start, $event->start);
         $this->assertEquals($end, $event->end);
         $this->assertEquals($owner_id, $event->owner_id);
+        $this->assertEquals($serie_id, $event->serie_id);
     }
 
     public function test_datetime_setter_with_string() {
@@ -40,6 +43,7 @@ class EventFactoryTest extends \WP_UnitTestCase {
         $end_str = '01-03-2019T13:00:00Z';
         $end = new DateTime($end_str);
         $owner_id = 1;
+        $serie_id = 1;
         // Act
         $event = (new EventFactory())
             ->set_id($id)
@@ -48,6 +52,7 @@ class EventFactoryTest extends \WP_UnitTestCase {
             ->set_start($start)
             ->set_end($end)
             ->set_owner_id($owner_id)
+            ->set_serie_id($serie_id)
             ->create();
         // Assert
         $this->assertEquals($id, $event->id);
@@ -56,6 +61,7 @@ class EventFactoryTest extends \WP_UnitTestCase {
         $this->assertEquals($start, $event->start);
         $this->assertEquals($end, $event->end);
         $this->assertEquals($owner_id, $event->owner_id);
+        $this->assertEquals($serie_id, $event->serie_id);
     }
 
     public function test_creation_from_array() {
@@ -66,6 +72,7 @@ class EventFactoryTest extends \WP_UnitTestCase {
         $start = new DateTime('01-03-2019T12:00:00Z');
         $end = new DateTime('01-03-2019T13:00:00Z');
         $owner_id = 1;
+        $serie_id = 1;
         // Create the array
         $array = array(
             'id' => $id,
@@ -73,7 +80,8 @@ class EventFactoryTest extends \WP_UnitTestCase {
             'description' => $description,
             'start' => $start,
             'end' => $end,
-            'owner_id' => $owner_id
+            'owner_id' => $owner_id,
+            'serie_id' => $serie_id
         );
         // Act
         $event = (new EventFactory())
@@ -86,6 +94,7 @@ class EventFactoryTest extends \WP_UnitTestCase {
         $this->assertEquals($start, $event->start);
         $this->assertEquals($end, $event->end);
         $this->assertEquals($owner_id, $event->owner_id);
+        $this->assertEquals($serie_id, $event->serie_id);
     }
 
     public function test_creation_from_arrays() {
@@ -96,7 +105,8 @@ class EventFactoryTest extends \WP_UnitTestCase {
             'description' => '',
             'start' => '2019-03-01T12:00:00Z',
             'end' => '2019-03-01T12:30:00Z',
-            'owner_id' => 0
+            'owner_id' => 0,
+            'serie_id' => 1
         );
         $array2 = array(
             'id' => 2,
@@ -104,7 +114,8 @@ class EventFactoryTest extends \WP_UnitTestCase {
             'description' => '',
             'start' => '2019-03-01T12:00:00Z',
             'end' => '2019-03-01T12:30:00Z',
-            'owner_id' => 0
+            'owner_id' => 0,
+            'serie_id' => 1
         );
         $array3 = array(
             'id' => 3,
@@ -112,7 +123,8 @@ class EventFactoryTest extends \WP_UnitTestCase {
             'description' => '',
             'start' => '2019-03-01T12:00:00Z',
             'end' => '2019-03-01T12:30:00Z',
-            'owner_id' => 0
+            'owner_id' => 0,
+            'serie_id' => 1
         );
         $arrays = [$array1, $array2, $array3];
         // Act

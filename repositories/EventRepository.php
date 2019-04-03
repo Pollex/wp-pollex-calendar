@@ -101,7 +101,8 @@ class EventRepository {
             'description' => $model->description,
             'start_datetime' => $model->start->format(\DateTime::ATOM),
             'end_datetime' => $model->end->format(\DateTime::ATOM),
-            'owner_id' => $model->owner_id
+            'owner_id' => $model->owner_id,
+            'serie_id' => $model->serie_id
         );
         return $row;
     }

@@ -71,6 +71,7 @@ class EventRepositoryTest extends \WP_UnitTestCase {
             ->set_start('2019-04-01T15:00:00Z')
             ->set_end('2019-04-01T16:00:00Z')
             ->set_owner_id(0)
+            ->set_serie_id(1)
             ->create();
         // Act
         $repo->save($event);

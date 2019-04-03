@@ -39,9 +39,9 @@ abstract class Factory {
      * Create multiple entities from arrays
      *
      * @param array $array
-     * @return Entity
+     * @return Entity[*]
      */
-    public static function create_multiple(array $array)
+    public static function create_multiple(array $array) : array
     {
         // Map each array in $array to a entity model
         $entities = array_map(function($single_array) {

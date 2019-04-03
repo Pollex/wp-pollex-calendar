@@ -9,14 +9,16 @@ class Event extends Entity{
     public $start;
     public $end;
     public $owner_id;
+    public $serie_id;
 
-    public function __construct(?int $id, string $title, string $description, \DateTime $start, \DateTime $end, int $owner_id) {
+    public function __construct(?int $id, string $title, string $description, \DateTime $start, \DateTime $end, int $owner_id, int $serie_id) {
         parent::__construct($id);
         $this->title = $title;
         $this->description = $description;
         $this->start = $start;
         $this->end = $end;
         $this->owner_id = $owner_id;
+        $this->serie_id = $serie_id;
     }
 
 }

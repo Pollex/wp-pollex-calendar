@@ -10,6 +10,7 @@ class EventFactory extends Factory {
     private $start;
     private $end;
     private $owner_id;
+    private $serie_id;
 
     public function __construct() {
         $id = null;
@@ -18,6 +19,7 @@ class EventFactory extends Factory {
         $start = new \DateTime();
         $end = new \DateTime();
         $owner_id = 0;
+        $serie_id = null;
     }
 
     /**
@@ -93,6 +95,18 @@ class EventFactory extends Factory {
     }
 
     /**
+     * Sets the serie_id property
+     *
+     * @param integer $serie_id
+     * @return void
+     */
+    public function set_serie_id(int $serie_id)
+    {
+        $this->serie_id = $serie_id;
+        return $this;
+    }
+
+    /**
      * Return the created event
      *
      * @return Event
@@ -104,7 +118,8 @@ class EventFactory extends Factory {
             $this->description,
             $this->start,
             $this->end,
-            $this->owner_id
+            $this->owner_id,
+            $this->serie_id
         );
     }
 

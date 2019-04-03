@@ -183,19 +183,23 @@ class EventsController extends Controller{
                     'type' => 'string'
                 ),
                 'start' => array(
-					'type'        => 'string',
-					'format'      => 'date-time',
+					'type' => 'string',
+					'format' => 'date-time',
                 ),
                 'end' => array(
-					'type'        => 'string',
-					'format'      => 'date-time',
+					'type' => 'string',
+					'format' => 'date-time',
+                ),
+                'serie_id' => array(
+                    'type' => 'int'
                 )
             ),
             'required' => array(
                 'title',
                 'description',
                 'start',
-                'end'
+                'end',
+                'serie_id'
             )
         );
         return $schema;
