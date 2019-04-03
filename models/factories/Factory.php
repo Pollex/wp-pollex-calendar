@@ -25,6 +25,17 @@ abstract class Factory {
     }
 
     /**
+     * Copy properties from an existance model instance
+     *
+     * @param Entity $model
+     * @return void
+     */
+    public function from_model(Entity $model)
+    {
+        return $this->from_array( (array) $model );
+    }
+    
+    /**
      * Create multiple entities from arrays
      *
      * @param array $array
