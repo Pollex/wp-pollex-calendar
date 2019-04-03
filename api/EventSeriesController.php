@@ -79,27 +79,6 @@ class EventSeriesController extends Controller {
         if (!empty($body['id'])) {
             return new WP_Error('rest_event_serie_exists', __('Cannot create existing eventserie.'), array('status' => 400));
         }
-        // Save item
-        // either create or update, if id exists or not respectively
-        return $this->save_item($request, $body);
-    }
-
-    public function update_item( $request )
-    {
-        $body = $request->get_params();
-        // Id should not be set
-        if (empty($body['id'])) {
-            return new WP_Error('rest_event_serie_missing_id', __('Cannot update without id.'), array('status' => 400));
-        }
-        // Save item
-        // either create or update, if id exists or not respectively
-        return $this->save_item($request, $body);
-    }
-
-    public function save_item( $request, $body = null ) {
-        if (empty($body)) {
-            $body = $request->get_params();
-        }
         // Create model
         $event_serie = (new EventSerieFactory())
             ->from_array($body)
@@ -110,7 +89,30 @@ class EventSeriesController extends Controller {
         // Prepare for response
         $data = $this->prepare_item_for_response($event_serie, $request);
         // Return created event
-        return new \WP_Rest_Response($data, 200 );
+        return new \WP_Rest_Response($data, 200);
+    }
+
+    public function update_item( $request )
+    {
+        $body = $request->get_params();
+        // Id should not be set
+        if (empty($body['id'])) {
+            return new WP_Error('rest_event_serie_missing_id', __('Cannot update without id.'), array('status' => 400));
+        }
+        // Get item to be updated
+        $repo = new EventSerieRepository();
+        $event_serie = $repo->find_by_id($body['id']);
+        // Update model
+        $event_serie = (new EventSerieFactory())
+            ->from_model($event_serie)
+            ->from_array($body)
+            ->create();
+        // Update item
+        $repo->save($event_serie);
+        // Prepare for response
+        $data = $this->prepare_item_for_response($event_serie, $request);
+        // Return created event
+        return new \WP_Rest_Response($data, 200);
     }
 
     public function get_items_permissions_check( $request ) {

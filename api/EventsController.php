@@ -102,24 +102,6 @@ class EventsController extends Controller{
             return new \WP_Error('rest_event_exists', __('Cannot create existing event.'), array('status' => 400 ) );
         }
         // Save item
-        // either create or update, if id exists or not respectively
-        return $this->save_item($request, $body);
-    }
-
-    public function update_item($request)
-    {
-        $body = $request->get_params();
-        // Id should not be set
-        if (empty($body['id'])) {
-            return new \WP_Error('rest_event_missing_id', __('Cannot update event without id.'), array('status' => 400));
-        }
-        // Save item
-        // either create or update, if id exists or not respectively
-        return $this->save_item($request, $body);
-    }
-
-    public function save_item($request, $body)
-    {
         // Create a model from the body
         $event = (new EventFactory())
             ->from_array((array)$body)
@@ -131,6 +113,30 @@ class EventsController extends Controller{
         // Prepare for response
         $data = $this->prepare_item_for_response($event, $request);
         // Return created event
+        return new \WP_Rest_Response($data, 200);
+    }
+
+    public function update_item($request)
+    {
+        $body = $request->get_params();
+        // Id should not be set
+        if (empty($body['id'])) {
+            return new \WP_Error('rest_event_missing_id', __('Cannot update event without id.'), array('status' => 400));
+        }
+        // Create the repository
+        $repo = new EventRepository();
+        // Get item to be updated
+        $event = $repo->find_by_id($body['id']);
+        // Create updated event
+        $event = (new EventFactory())
+            ->from_model($event)
+            ->from_array($body)
+            ->create();
+        // Save new item
+        $repo->save($event);
+        // Prepare event for response
+        $data = $this->prepare_item_for_response($event, $request);
+        // Return updated event
         return new \WP_Rest_Response($data, 200);
     }
 
