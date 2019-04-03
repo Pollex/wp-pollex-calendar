@@ -51,6 +51,12 @@ class EventsController extends Controller{
                     )
                 )
             ),
+            array(
+                'methods' => \WP_REST_Server::EDITABLE,
+                'callback' => array( $this, 'update_item' ),
+                'permission_callback' => array( $this, 'update_item_permissions_check' ),
+                'args' => $this->get_endpoint_args_for_item_schema( \WP_REST_Server::EDITABLE )
+            ),
             'schema' => array( $this, 'get_item_schema' )
         ));
     }
@@ -93,8 +99,27 @@ class EventsController extends Controller{
         $body = $request->get_params();
         // Id should not be set
         if (!empty($body['id'])) {
-            return new WP_Error('rest_event_exists', __('Cannot create existing event.'), array('status' => 400 ) );
+            return new \WP_Error('rest_event_exists', __('Cannot create existing event.'), array('status' => 400 ) );
         }
+        // Save item
+        // either create or update, if id exists or not respectively
+        return $this->save_item($request, $body);
+    }
+
+    public function update_item($request)
+    {
+        $body = $request->get_params();
+        // Id should not be set
+        if (empty($body['id'])) {
+            return new \WP_Error('rest_event_missing_id', __('Cannot update event without id.'), array('status' => 400));
+        }
+        // Save item
+        // either create or update, if id exists or not respectively
+        return $this->save_item($request, $body);
+    }
+
+    public function save_item($request, $body)
+    {
         // Create a model from the body
         $event = (new EventFactory())
             ->from_array((array)$body)
@@ -106,7 +131,7 @@ class EventsController extends Controller{
         // Prepare for response
         $data = $this->prepare_item_for_response($event, $request);
         // Return created event
-        return new \WP_Rest_Response( $data, 200 );
+        return new \WP_Rest_Response($data, 200);
     }
 
     public function get_items_permissions_check( $request ) {
@@ -120,6 +145,12 @@ class EventsController extends Controller{
     }
 
     public function create_item_permissions_check($request)
+    {
+        // TODO: Implement actual permissions
+        return true;
+    }
+
+    public function update_item_permissions_check($request)
     {
         // TODO: Implement actual permissions
         return true;
