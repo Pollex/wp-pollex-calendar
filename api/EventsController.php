@@ -26,6 +26,10 @@ class EventsController extends Controller{
                     'end' => array(
                         'required' => true,
                         'validate_callback' => 'rest_parse_date'
+                    ),
+                    'serie_id' => array(
+                        'required' => false,
+                        'validate_callback' => array($this, 'is_numeric')
                     )
                 )
             ),
@@ -45,9 +49,7 @@ class EventsController extends Controller{
                 'permission_callback' => array( $this, 'get_item_permissions_check' ),
                 'args' => array(
                     'id' => array(
-                        'validate_callback' => function($param, $request, $key) {
-                            return is_numeric($param);
-                        }
+                        'validate_callback' => array( $this, 'is_numeric' )
                     )
                 )
             ),
@@ -61,13 +63,30 @@ class EventsController extends Controller{
         ));
     }
 
+    public function is_numeric($param, $request, $key)
+    {
+        return is_numeric($param);
+    }
+
     public function get_items( $request ) {
         // Parse start and end datetimes
         $start = new \DateTime($request->get_param('start'));
         $end = new \DateTime($request->get_param('end'));
+        // Check if filter is specified
+        $filter_by_serie = $request->get_param('serie_id');
         // Create a repository and request the data
         $repo = new EventRepository();
         $events = $repo->find_all_in_period($start, $end);
+        // Check if filter needs to be applied
+        if ( $filter_by_serie != null ) {
+            $filter_by_serie = (int)$filter_by_serie;
+            $events = array_filter(
+                $events,
+                function( $event ) use ( $filter_by_serie ) {
+                    return $event->serie_id == $filter_by_serie;
+                } 
+            );
+        }
         // Prepare for response
         $data = [];
         foreach ($events as $event) {
