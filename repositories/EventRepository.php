@@ -1,18 +1,43 @@
 <?php namespace Pollex\Calendar\Repositories;
 
+use Pollex\Calendar\Models\Event as Event;
 use Pollex\Calendar\Models\Factories\EventFactory as EventFactory;
 
 class EventRepository {
 
     private $TABLE_NAME = 'pollex_calendar_events';
     private $COLUMN_MAPPING = array(
-        'start' => 'start_datetime',
-        'end' => 'end_datetime'
+        'start_datetime' => 'start',
+        'end_datetime' => 'end'
     );
 
     public function __construct() {
         global $wpdb;
         $this->TABLE_NAME = $wpdb->prefix . $this->TABLE_NAME;
+    }
+
+    /**
+     * Saves an event to the repository
+     *
+     * @param Event $model
+     * @return Event 
+     */
+    public function save(Event &$model)
+    {
+        global $wpdb;
+        // Create a database row from the given model
+        $row = $this->create_row_from_model($model);
+        // Todo: Decide what we do with an insert fail
+        // Update model
+        $wpdb->replace(
+            $this->TABLE_NAME,
+            $row
+        );
+        // Ensure id is set
+        $row['id'] = $wpdb->insert_id;
+        // Create a new model, change reference and return
+        $model = $this->create_model_from_row($row);
+        return $model;
     }
 
     /**
@@ -33,9 +58,90 @@ class EventRepository {
             $from,
             $to
         );
-        $results = $wpdb->get_results($query, ARRAY_A);
+        $rows = $wpdb->get_results($query, ARRAY_A);
 
-        return EventFactory::create_multiple($results, $this->COLUMN_MAPPING);
+        return $this->create_models_from_rows($rows);
+    }
+
+    /**
+     * Find a single event by its id
+     *
+     * @param integer $id
+     * @return Event
+     */
+    public function find_by_id(int $id) : ?Event {
+        global $wpdb;
+
+        // Query for single row by id
+        $query = $wpdb->prepare(
+            "SELECT * FROM $this->TABLE_NAME WHERE id=%d",
+            $id
+        );
+        $row = $wpdb->get_row($query, ARRAY_A);
+        // Check existance
+        if ($row == null) {
+            // throw EntityNotFoundException::create_from_entity_and_id('Event', $id);
+            return null;
+        }
+        // Return created entity from row
+        return $this->create_model_from_row($row);
+    }
+
+    /**
+     * Prepares a row for the database from a model
+     *
+     * @param Event $model
+     * @return array
+     */
+    protected function create_row_from_model(Event $model) {
+        // Create array for database
+        $row = array(
+            'id' => $model->id,
+            'title' => $model->title,
+            'description' => $model->description,
+            'start_datetime' => $model->start->format(\DateTime::ATOM),
+            'end_datetime' => $model->end->format(\DateTime::ATOM),
+            'owner_id' => $model->owner_id,
+            'serie_id' => $model->serie_id
+        );
+        return $row;
+    }
+
+    /**
+     * Prepares a database row for model creation
+     *
+     * @param array $row
+     * @return array
+     */
+    protected function create_model_from_row(array $row) {
+        // Map keys
+        $this->array_replace_key($row, $this->COLUMN_MAPPING);
+        // Create event instance
+        return (new EventFactory())->from_array($row)->create();
+    }
+
+    /**
+     * Prepares multiple database rows for model creation
+     *
+     * @param array $row
+     * @return array
+     */
+    protected function create_models_from_rows(array $rows)
+    {
+        foreach($rows as &$row) {
+            $this->array_replace_key($row, $this->COLUMN_MAPPING);
+        }
+        return EventFactory::create_multiple($rows);
+    }
+
+    protected function array_replace_key(array &$array, array $mapping) {
+        foreach( $array as $key => $value ) {
+            // Check if key is mapped
+            if ( array_key_exists($key, $mapping) ) {
+                $array[$mapping[$key]] = $value;
+                unset($array[$key]);
+            }
+        }
     }
 
 }

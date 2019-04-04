@@ -11,8 +11,8 @@ class EventSerieTest extends WP_UnitTestCase {
         // Act
         $event_serie = new EventSerie($id, $type);
         // Assert
-        $this->assertEquals($id, $event_serie->get_id());
-        $this->assertEquals($type, $event_serie->get_type());
+        $this->assertEquals($id, $event_serie->id);
+        $this->assertEquals($type, $event_serie->type);
     }
 
 }

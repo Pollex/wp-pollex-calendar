@@ -15,7 +15,9 @@
         ],
         "psr-4": {
             "Pollex\\Calendar\\Models\\": "./models",
-            "Pollex\\Calendar\\Repositories\\": "./repositories"
+            "Pollex\\Calendar\\Repositories\\": "./repositories",
+            "Pollex\\Calendar\\API\\": "./api",
+            "Pollex\\Calendar\\Exceptions\\": "./exceptions"
         }
     },
     "require": {},
