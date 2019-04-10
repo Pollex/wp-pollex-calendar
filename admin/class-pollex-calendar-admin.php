@@ -112,4 +112,10 @@ class Pollex_Calendar_Admin {
 
 	}
 
+	public function register_admin_menu()
+	{
+		$pollex_calendar_settings = new Pollex_Calendar_Settings( $this->plugin_name, $this->version );
+		$pollex_calendar_settings->register_admin_menu();
+	}
+
 }

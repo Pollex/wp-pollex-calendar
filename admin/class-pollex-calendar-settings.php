@@ -11,7 +11,20 @@ class Pollex_Calendar_Settings
         $this->version = $version;
     }
 
-    public function setup_options_menu() {
-        // Setup menu pages
+    public function register_admin_menu() {
+        // Register top-level menu page
+        add_menu_page(
+            'Pollex&#39; Calendar',
+            'Calendar',
+            'activate_plugins',
+            'pollex-calendar',
+            array($this, 'render_admin_page_content'),
+            '',
+            30
+        );
+    }
+
+    public function render_admin_page_content() {
+        echo 'Currently unused';
     }
 }
