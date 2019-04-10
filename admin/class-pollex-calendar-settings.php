@@ -25,6 +25,6 @@ class Pollex_Calendar_Settings
     }
 
     public function render_admin_page_content() {
-        echo 'Currently unused';
+        echo '<div id="pollex-calendar-admin-application">Loading...</div>';
     }
 }
